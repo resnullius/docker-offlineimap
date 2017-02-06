@@ -7,6 +7,6 @@ RUN apk-install offlineimap && \
 
 USER user
 ENV HOME /home/user
-VOLUME ["/home/user/.configs", "/home/user/.secret", "/home/user/Mail"]
+VOLUME ["/Configs", "/Secrets", "/Mail"]
 
-ENTRYPOINT ["offlineimap", "-c", "/home/user/.configs/offlineimaprc"]
+ENTRYPOINT ["offlineimap", "-c", "/Configs/offlineimaprc"]
