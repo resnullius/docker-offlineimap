@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# vim: ft=sh
+
+declare help="
+Orchestrator script for Alpine's offlineimap image.
+
+Usage:
+  orchestrator test
+  orchestrator build
+  orchestrator push
+  orchestrator bundle
+
+Options:
+  -h --help           Show this screen.
+  --version           Show versions.
+"
+
+declare version="
+Version: 1.0.0.
+Licensed under the MIT terms.
+"
+
+run_build() {
+  docker build -t resnullius/offlineimap .
+}
+
+run_tests() {
+  bats test.bats
+}
+
+run_push() {
+  docker push resnullius/offlineimap
+}
+
+version() {
+  echo "$version"
+}
+
+help() {
+  echo "$help"
+}
+
+main() {
+  set -eo pipefail; [[ "$TRACE" ]] && set -x
+  declare cmd="$1"
+  case "$cmd" in
+    test)         shift; run_tests "$@";;
+    push)         shift; run_push "$@";;
+    build)        shift; run_build "$@";;
+    -h|--help)    shift; help "$@";;
+    --version)    shift; version;;
+    *)            help "$@";;
+  esac
+}
+
+main "$@"
